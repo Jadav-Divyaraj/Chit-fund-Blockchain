@@ -8,7 +8,7 @@ describe("MyToken", function () {
     [owner, addr1, addr2] = await ethers.getSigners();
     Token = await ethers.getContractFactory("MyToken");
     token = await Token.deploy();
-    await token.deployed();
+    await token.waitForDeployment();
   });
 
   it("has correct name and symbol and initial supply", async function () {
@@ -21,13 +21,13 @@ describe("MyToken", function () {
   });
 
   it("allows transfers", async function () {
-    const amount = ethers.utils.parseUnits("100", 18);
+    const amount = ethers.parseUnits("100", 18);
     await token.transfer(addr1.address, amount);
     expect(await token.balanceOf(addr1.address)).to.equal(amount);
   });
 
   it("owner can mint, others cannot", async function () {
-    const amount = ethers.utils.parseUnits("1000", 18);
+    const amount = ethers.parseUnits("1000", 18);
     await token.mint(addr1.address, amount);
     expect(await token.balanceOf(addr1.address)).to.equal(amount);
 
