@@ -1,13 +1,18 @@
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  console.log("Deploying contracts with account:", deployer.address);
+  console.log("Deploying SmartChit with account:", deployer.address);
 
-  const Token = await ethers.getContractFactory("MyToken");
-  const token = await Token.deploy();
-  await token.deployed();
+  // Monthly amount: 1 POL = 1e18 wei
+  const monthlyAmount = ethers.parseEther("1");
 
-  console.log("MyToken deployed to:", token.address);
+  const SmartChit = await ethers.getContractFactory("SmartChit");
+  const smartchit = await SmartChit.deploy(monthlyAmount);
+  await smartchit.waitForDeployment();
+
+  const address = await smartchit.getAddress();
+  console.log("SmartChit deployed to:", address);
+  console.log("Monthly amount:", ethers.formatEther(monthlyAmount), "POL");
 }
 
 main().catch((error) => {

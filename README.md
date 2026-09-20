@@ -1,36 +1,24 @@
 # SmartChit — Blockchain Chit Fund
 
-> India's first trustless chit fund. No organizer controls your money. No fraud possible. Every rupee tracked on blockchain.
+> A blockchain-based chit-fund prototype designed to reduce reliance on a centralized organizer through smart-contract-controlled fund flows.
 
 ![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?style=flat&logo=solidity)
 ![Polygon](https://img.shields.io/badge/Polygon-Amoy%20Testnet-8247E5?style=flat&logo=polygon)
-![Ethers.js](https://img.shields.io/badge/Ethers.js-6.x-3C3C3D?style=flat&logo=ethereum)
+![Hardhat](https://img.shields.io/badge/Hardhat-2.19-FFDB1C?style=flat&logo=hardhat)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**🔗 Live Demo:** (https://chit-fund-blockchain.netlify.app/))
+**Live Demo:** [https://chit-fund-blockchain.vercel.app](https://chit-fund-blockchain.vercel.app)
 
 ---
 
-## The Problem
+## Overview
 
-India's **₹50,000 Crore** chit fund industry is riddled with fraud:
+India's ₹50,000 Crore chit fund industry operates on trust — organizers manage pooled money with no transparency. SmartChit replaces the human organizer with a Solidity smart contract on Polygon, where:
 
-- **3 Crore+** victims lose money every year to chit fund scams
-- Organisers run away with pooled money
-- No transparency — members blindly trust the manager
-- Legal remedies take years; money is gone forever
-
-**SmartChit eliminates trust** by replacing the human organizer with a smart contract.
-
----
-
-## Demo
-
-### Live on Polygon — On-Chain Verification
-![Live Polygon](screenshots/06-live-polygon.png)
-
-### Transaction Demo
-![Transaction Demo](screenshots/07-transaction-demo.png)
+- Members join and pay contributions on-chain
+- Auctions run automatically with time-limited bidding
+- Fund distribution happens programmatically — no manual approval
+- All transactions are publicly verifiable on Polygonscan
 
 ---
 
@@ -61,24 +49,49 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 1. **Connect MetaMask** → Polygon Amoy Testnet (chain ID: 80002)
 2. **Join Fund** → Call `join()` on the smart contract (gas only)
 3. **Pay Contribution** → Send 1 POL monthly via `pay()`
-4. **Auction Opens** → When all 5 members pay, auction starts with timer
-5. **Place Bids** → Members bid discount amounts (e.g., 0.001 POL)
+4. **Auction Opens** → When all 5 members pay, auction starts with 5-minute timer
+5. **Place Bids** → Members bid discount amounts (e.g., 0.1 POL)
 6. **Winner Declared** → Lowest bidder wins the pot minus their discount
 7. **Verify Everything** → All transactions visible on Polygonscan
 
 ---
 
-## Security: Why CEO Cannot Steal
+## Smart Contract
 
-| Threat | Protection |
-|--------|------------|
-| CEO withdraws funds | **No `withdrawAllFunds()` function exists** in the contract |
-| Contract code changed | **Immutable** — deployed code cannot be modified |
-| Hidden transactions | **Public ledger** — all movements on Polygonscan |
-| Manual fund release | **Automatic distribution** — no human approval needed |
-| Fake member entries | **On-chain verification** — only wallet addresses join |
+**Deployed Address:** `0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54`
 
-> **Proof:** Try calling `withdrawAllFunds()` — it fails. Your money is protected by math, not trust.
+### Key Functions
+
+| Function | Description |
+|----------|-------------|
+| `join()` | Join the chit fund (max 5 members) |
+| `pay()` | Pay monthly contribution (1 POL) |
+| `placeBid(discountAmount)` | Place bid for auction discount |
+| `endAuction()` | End auction & distribute funds |
+| `getMembers()` | List all members |
+| `hasPaid(address)` | Check if member paid this month |
+| `totalPot()` | Get current pot balance |
+| `auctionActive()` | Check if auction is running |
+
+### Events
+
+| Event | Emitted When |
+|-------|-------------|
+| `Joined` | New member joins |
+| `Paid` | Member pays contribution |
+| `BidPlaced` | Member places auction bid |
+| `WinnerSelected` | Auction winner declared |
+| `DividendPaid` | Dividend distributed to members |
+
+### Security Properties
+
+| Property | Implementation |
+|----------|---------------|
+| No owner withdrawal | Contract has no `withdraw()` function |
+| Immutable code | Deployed contract cannot be modified |
+| Public ledger | All transactions on Polygonscan |
+| Automatic distribution | Funds sent programmatically to winner |
+| Time-bound auctions | 5-minute auction window enforced on-chain |
 
 ---
 
@@ -101,11 +114,11 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 ```
 Chit-fund-Blockchain/
 ├── contracts/
-│   └── MyToken.sol          # ERC-20 token contract
+│   └── SmartChit.sol        # Chit fund smart contract
 ├── scripts/
 │   └── deploy.js            # Deployment script
 ├── test/
-│   └── MyToken.test.js      # Unit tests
+│   └── SmartChit.test.js    # 27 unit tests
 ├── screenshots/             # Demo screenshots
 │   ├── 06-live-polygon.png
 │   └── 07-transaction-demo.png
@@ -119,35 +132,6 @@ Chit-fund-Blockchain/
 ├── LICENSE                  # MIT License
 └── README.md                # This file
 ```
-
----
-
-## Smart Contract Details
-
-**Deployed Address:** `0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54`
-
-### Key Functions
-
-| Function | Description |
-|----------|-------------|
-| `join()` | Join the chit fund (max 5 members) |
-| `pay()` | Pay monthly contribution (1 POL) |
-| `placeBid(discountAmount)` | Place bid for auction discount |
-| `endAuction()` | End auction & select winner |
-| `getMembers()` | List all members |
-| `hasPaid(address)` | Check if member paid this month |
-| `totalPot()` | Get current pot balance |
-| `auctionActive()` | Check if auction is running |
-
-### Events
-
-| Event | Emitted When |
-|-------|-------------|
-| `Joined` | New member joins |
-| `Paid` | Member pays contribution |
-| `BidPlaced` | Member places auction bid |
-| `WinnerSelected` | Auction winner declared |
-| `DividendPaid` | Winner receives funds |
 
 ---
 
@@ -234,12 +218,42 @@ npx hardhat test
 ```
 
 ```
-MyToken
-  ✔ has correct name and symbol and initial supply
-  ✔ allows transfers
-  ✔ owner can mint, others cannot
+SmartChit
+  Deployment
+    ✔ sets owner correctly
+    ✔ sets monthly amount correctly
+    ✔ starts with 0 members
+    ✔ starts with 0 total pot
+    ✔ auction not active initially
+  Join
+    ✔ allows new members to join
+    ✔ emits Joined event
+    ✔ prevents duplicate membership
+    ✔ prevents joining after 5 members
+  Pay
+    ✔ allows member to pay
+    ✔ emits Paid event
+    ✔ rejects non-member payment
+    ✔ rejects wrong amount
+    ✔ rejects double payment
+  Auction
+    ✔ starts auction when all pay
+    ✔ allows members to place bids
+    ✔ emits BidPlaced event
+    ✔ rejects bid from non-member
+    ✔ rejects invalid bid amount (zero)
+    ✔ rejects bid >= total pot
+    ✔ getCurrentBids returns all bids
+  End Auction
+    ✔ cannot end auction before time
+    ✔ ends auction and pays winner
+    ✔ resets for next month after auction
+    ✔ carries pot to next month if no bids
+  View Functions
+    ✔ getMembers returns all members
+    ✔ getBalance returns contract balance
 
-3 passing
+27 passing
 ```
 
 ---
@@ -257,7 +271,3 @@ MyToken
 ## License
 
 MIT License — feel free to use and modify.
-
----
-
-Built with a vision to make financial systems transparent and trustless.
