@@ -26,22 +26,8 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 
 ## Demo
 
-### Hero Section
-![Hero Section](screenshots/01-hero.png)
-
-### Dashboard — After Wallet Connect
-![Dashboard](screenshots/02-dashboard.png)
-
-### Monthly Auction — Live Bidding
-![Auction](screenshots/03-auction.png)
-
-### Security Proof — CEO Theft Attempt (Fails!)
-![Security Demo](screenshots/04-security.png)
-
-### Polygonscan — On-Chain Verification
-![Polygonscan](screenshots/05-polygonscan.png)
-
-> **Note:** Replace the screenshot files in `screenshots/` folder with your actual demo images.
+### Live on Polygon — On-Chain Verification
+![Live Polygon](screenshots/06-live-polygon.png)
 
 ---
 
@@ -118,11 +104,7 @@ Chit-fund-Blockchain/
 ├── test/
 │   └── MyToken.test.js      # Unit tests
 ├── screenshots/             # Demo screenshots
-│   ├── 01-hero.png
-│   ├── 02-dashboard.png
-│   ├── 03-auction.png
-│   ├── 04-security.png
-│   └── 05-polygonscan.png
+│   └── 06-live-polygon.png
 ├── index.html               # Main UI — hero, dashboard, auction
 ├── app.js                   # Blockchain interaction & wallet logic
 ├── style.css                # Dark theme with gold accents
