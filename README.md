@@ -88,20 +88,18 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 ```
 Chit-fund-Blockchain/
 ├── contracts/
-│   └── MyToken.sol          # ERC-20 token contract (demo)
+│   └── MyToken.sol          # ERC-20 token contract
 ├── scripts/
 │   └── deploy.js            # Deployment script
 ├── test/
 │   └── MyToken.test.js      # Unit tests
-├── Real Website Files/      # Backup/reference files
-├── TS-08 files/             # Architecture documentation
 ├── index.html               # Main UI — hero, dashboard, auction
 ├── app.js                   # Blockchain interaction & wallet logic
 ├── style.css                # Dark theme with gold accents
 ├── hardhat.config.js        # Hardhat configuration
-├── family.html              # VanAdhikar — Forest rights portal
-├── snake_game.py            # Snake game (Pygame)
-├── dj.cpp                   # Hello World (C++)
+├── package.json             # Node dependencies
+├── .gitignore               # Git ignore rules
+├── LICENSE                  # MIT License
 └── README.md                # This file
 ```
 
@@ -187,18 +185,6 @@ npx hardhat run scripts/deploy.js --network amoy
 - **Security Demo** — Simulate CEO theft attempt (it fails!)
 - **Responsive Design** — Works on desktop and mobile
 - **Toast Notifications** — Real-time transaction feedback
-
----
-
-## VanAdhikar (Forest Rights Portal)
-
-A separate portal (`family.html`) for forest rights tracking:
-
-- **Multilingual** — Gujarati, Hindi, English
-- **Payment History** — On-chain entitlement vs received
-- **Shortfall Detection** — Automatic underpayment alerts
-- **Dispute Filing** — File complaints routed to DTDO
-- **Voice Input** — Web Speech API for rural accessibility
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "name": "smartchit-blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain-based trustless chit fund on Polygon Amoy Testnet",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:amoy": "hardhat run scripts/deploy.js --network amoy"
+  },
+  "keywords": ["blockchain", "chit-fund", "solidity", "polygon", "web3"],
+  "author": "Jadav-Divyaraj",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  }
+}

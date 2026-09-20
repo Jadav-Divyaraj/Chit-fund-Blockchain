@@ -3,7 +3,7 @@
 // Contract: 0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54
 // ============================================================
 
-const CONTRACT_ADDRESS = "0x82C1E20F96DF9CbB7666CC905abB8bdc51A2Ac0F";
+const CONTRACT_ADDRESS = "0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54";
 
 const CONTRACT_ABI = [
     { "inputs": [{ "internalType": "uint256", "name": "_monthlyAmount", "type": "uint256" }], "stateMutability": "nonpayable", "type": "constructor" },
