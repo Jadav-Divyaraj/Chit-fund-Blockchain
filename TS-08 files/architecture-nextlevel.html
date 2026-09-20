@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VanAdhikar — Next-Level Roadmap | TS-08</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+        --bg: #0a0a1a;
+        --panel: #0f1428;
+        --tier1: #10b981;
+        --tier2: #f59e0b;
+        --tier3: #ec4899;
+        --tier4: #8b5cf6;
+        --accent: #52b788;
+        --text: #e6f1ea;
+        --muted: #94a3b8;
+        --border: rgba(139, 92, 246, 0.3);
+    }
+    body {
+        font-family: 'Space Grotesk', sans-serif;
+        background:
+            radial-gradient(ellipse at 20% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 30%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 60%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+            radial-gradient(ellipse at 20% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+            var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 32px 24px 64px;
+    }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 24px; }
+    .header .badge {
+        display: inline-block; padding: 4px 12px;
+        background: linear-gradient(90deg, var(--tier1), var(--tier2), var(--tier3), var(--tier4));
+        color: #0a0a1a; font-weight: 700;
+        border-radius: 999px; font-size: 11px;
+        letter-spacing: 1.5px; text-transform: uppercase;
+        font-family: 'JetBrains Mono', monospace;
+        margin-bottom: 12px;
+    }
+    .header h1 {
+        font-size: 32px; font-weight: 700; margin-bottom: 6px;
+        background: linear-gradient(135deg, #52b788, #10b981, #f59e0b, #ec4899, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .header p { color: var(--muted); font-size: 14px; max-width: 700px; margin: 0 auto; }
+
+    .tier-legend {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        gap: 12px; margin: 24px 0;
+    }
+    .tier-pill {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-left-width: 4px;
+        border-radius: 10px;
+        padding: 12px 14px;
+        font-size: 12px;
+    }
+    .tier-pill.t1 { border-left-color: var(--tier1); }
+    .tier-pill.t2 { border-left-color: var(--tier2); }
+    .tier-pill.t3 { border-left-color: var(--tier3); }
+    .tier-pill.t4 { border-left-color: var(--tier4); }
+    .tier-pill .t-name {
+        font-weight: 700; font-size: 12px; margin-bottom: 3px;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+    .tier-pill.t1 .t-name { color: var(--tier1); }
+    .tier-pill.t2 .t-name { color: var(--tier2); }
+    .tier-pill.t3 .t-name { color: var(--tier3); }
+    .tier-pill.t4 .t-name { color: var(--tier4); }
+    .tier-pill .t-desc { color: var(--muted); font-size: 11.5px; line-height: 1.4; }
+
+    .diagram-wrap {
+        background: linear-gradient(180deg, rgba(15, 20, 40, 0.6), rgba(10, 10, 26, 0.8));
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        margin-bottom: 32px;
+    }
+    .arch-svg { width: 100%; height: auto; display: block; }
+    .layer-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px; font-weight: 600;
+        letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .node-box {
+        fill: var(--panel);
+        stroke: var(--border);
+        stroke-width: 1.5; rx: 10; ry: 10;
+        transition: all 0.25s ease;
+    }
+    .node-box:hover { filter: drop-shadow(0 0 12px currentColor); }
+    .node-title { fill: var(--text); font-size: 13px; font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
+    .node-sub { fill: var(--muted); font-size: 10.5px; font-family: 'JetBrains Mono', monospace; }
+    .node-icon { font-size: 18px; }
+    .t1 { stroke: var(--tier1); color: var(--tier1); }
+    .t2 { stroke: var(--tier2); color: var(--tier2); }
+    .t3 { stroke: var(--tier3); color: var(--tier3); }
+    .t4 { stroke: var(--tier4); color: var(--tier4); }
+    .accent { stroke: var(--accent); }
+    .conn { stroke-width: 1.5; fill: none; opacity: 0.5; }
+    .conn-t1 { stroke: var(--tier1); }
+    .conn-t2 { stroke: var(--tier2); }
+    .conn-t3 { stroke: var(--tier3); }
+    .conn-t4 { stroke: var(--tier4); }
+    .conn-dash { stroke-dasharray: 4 4; }
+    .conn-label { fill: var(--muted); font-size: 10px; font-family: 'JetBrains Mono', monospace; }
+    .new-tag {
+        fill: #fbbf24; font-size: 9px; font-weight: 700;
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+    .exist-tag {
+        fill: #6b7280; font-size: 9px; font-weight: 600;
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+    .detail-tag {
+        fill: #cbd5e1; font-size: 10.5px; font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Feature cards section */
+    .features-section {
+        margin: 40px 0 32px;
+    }
+    .section-title {
+        font-size: 22px; font-weight: 700;
+        margin-bottom: 16px; text-align: center;
+        background: linear-gradient(135deg, #52b788, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+    }
+    .feat-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-top: 4px solid;
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.25s;
+    }
+    .feat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+    .feat-card.t1 { border-top-color: var(--tier1); }
+    .feat-card.t2 { border-top-color: var(--tier2); }
+    .feat-card.t3 { border-top-color: var(--tier3); }
+    .feat-card.t4 { border-top-color: var(--tier4); }
+    .feat-head {
+        display: flex; align-items: center; gap: 10px;
+        margin-bottom: 10px;
+    }
+    .feat-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700; font-size: 12px;
+        background: var(--bg);
+        padding: 4px 8px; border-radius: 6px;
+        border: 1px solid var(--border);
+    }
+    .feat-card.t1 .feat-num { color: var(--tier1); }
+    .feat-card.t2 .feat-num { color: var(--tier2); }
+    .feat-card.t3 .feat-num { color: var(--tier3); }
+    .feat-card.t4 .feat-num { color: var(--tier4); }
+    .feat-title {
+        font-size: 15px; font-weight: 600; color: var(--text);
+    }
+    .feat-tier {
+        font-size: 10px; font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase; letter-spacing: 1px;
+        padding: 2px 6px; border-radius: 4px;
+        margin-left: auto;
+    }
+    .feat-card.t1 .feat-tier { background: rgba(16, 185, 129, 0.15); color: var(--tier1); }
+    .feat-card.t2 .feat-tier { background: rgba(245, 158, 11, 0.15); color: var(--tier2); }
+    .feat-card.t3 .feat-tier { background: rgba(236, 72, 153, 0.15); color: var(--tier3); }
+    .feat-card.t4 .feat-tier { background: rgba(139, 92, 246, 0.15); color: var(--tier4); }
+    .feat-prob { color: var(--muted); font-size: 12.5px; line-height: 1.55; margin-bottom: 10px; }
+    .feat-tech {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px; color: var(--muted);
+        padding-top: 10px;
+        border-top: 1px dashed var(--border);
+    }
+    .feat-tech strong { color: var(--text); }
+    .feat-impact {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 3px 8px;
+        background: rgba(82, 183, 136, 0.15);
+        color: var(--accent);
+        border-radius: 4px;
+        font-size: 11px; font-weight: 600;
+    }
+
+    /* Roadmap timeline */
+    .roadmap {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 32px;
+    }
+    .roadmap h2 { font-size: 18px; margin-bottom: 16px; color: var(--accent); }
+    .roadmap-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+    .roadmap-quarter {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+    }
+    .roadmap-quarter h3 {
+        font-size: 13px; font-weight: 700; margin-bottom: 8px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .roadmap-quarter .q-num { color: var(--accent); }
+    .roadmap-quarter ul { list-style: none; padding: 0; }
+    .roadmap-quarter li {
+        font-size: 11.5px; padding: 4px 0; color: var(--text);
+        line-height: 1.4; display: flex; gap: 6px;
+    }
+    .roadmap-quarter li::before { content: "▸"; color: var(--accent); flex-shrink: 0; }
+
+    .footer {
+        text-align: center; margin-top: 32px;
+        color: var(--muted); font-size: 12px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+</style>
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="badge">TS-08 · ROADMAP V2.0</div>
+        <h1>VanAdhikar — Next-Level Architecture</h1>
+        <p>12 features across 4 strategic tiers, transforming a working pilot into a national-scale, AI-powered, self-sovereign forest rights platform.</p>
+    </div>
+
+    <div class="tier-legend">
+        <div class="tier-pill t1">
+            <div class="t-name">🌱 Tier 1 · Real-World Readiness</div>
+            <div class="t-desc">Make it actually usable in tribal villages with poor connectivity</div>
+        </div>
+        <div class="tier-pill t2">
+            <div class="t-name">🔒 Tier 2 · Trust &amp; Transparency</div>
+            <div class="t-desc">Strengthen the "immutable" claim with self-sovereign identity &amp; DAO</div>
+        </div>
+        <div class="tier-pill t3">
+            <div class="t-name">🤖 Tier 3 · Intelligence Layer</div>
+            <div class="t-desc">Turn static ledger into living ecosystem with AI, IoT &amp; DeFi</div>
+        </div>
+        <div class="tier-pill t4">
+            <div class="t-name">🌐 Tier 4 · Scale &amp; Identity</div>
+            <div class="t-desc">Onboard millions with DID, cross-chain bridges &amp; ZK privacy</div>
+        </div>
+    </div>
+
+    <div class="diagram-wrap">
+        <svg class="arch-svg" viewBox="0 0 1400 1850" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#52b788" />
+                </marker>
+                <marker id="arrow-t1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981" />
+                </marker>
+                <marker id="arrow-t2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b" />
+                </marker>
+                <marker id="arrow-t3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#ec4899" />
+                </marker>
+                <marker id="arrow-t4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b5cf6" />
+                </marker>
+            </defs>
+
+            <text x="20" y="40" class="layer-label" fill="#94a3b8">LAYER 0 · USERS (existing + new personas)</text>
+
+            <g transform="translate(60, 60)">
+                <rect class="node-box accent" x="0" y="0" width="200" height="70" />
+                <text class="node-icon" x="20" y="32">👨‍👩‍👧</text>
+                <text class="node-title" x="52" y="30">Forest Families</text>
+                <text class="node-sub" x="52" y="50">📱 + offline access</text>
+                <text class="exist-tag" x="52" y="64">EXISTING</text>
+            </g>
+
+            <g transform="translate(280, 60)">
+                <rect class="node-box accent" x="0" y="0" width="200" height="70" />
+                <text class="node-icon" x="20" y="32">⚖️</text>
+                <text class="node-title" x="52" y="30">DTDO Officials</text>
+                <text class="exist-tag" x="52" y="50">EXISTING</text>
+                <text class="node-sub" x="52" y="64">Adjudicators</text>
+            </g>
+
+            <g transform="translate(500, 60)">
+                <rect class="node-box accent" x="0" y="0" width="200" height="70" />
+                <text class="node-icon" x="20" y="32">🏛️</text>
+                <text class="node-title" x="52" y="30">Co-op Admins</text>
+                <text class="exist-tag" x="52" y="50">EXISTING</text>
+                <text class="node-sub" x="52" y="64">Multisig co-signers</text>
+            </g>
+
+            <g transform="translate(720, 60)">
+                <rect class="node-box t1" x="0" y="0" width="200" height="70" />
+                <text class="node-icon" x="20" y="32">🧑‍🌾</text>
+                <text class="node-title" x="52" y="30">Field Volunteers</text>
+                <text class="new-tag" x="52" y="50">🆕 NEW · TIER 1</text>
+                <text class="node-sub" x="52" y="64">Offline data collectors</text>
+            </g>
+
+            <g transform="translate(940, 60)">
+                <rect class="node-box t2" x="0" y="0" width="200" height="70" />
+                <text class="node-icon" x="20" y="32">🗳️</text>
+                <text class="node-title" x="52" y="30">DAO Members</text>
+                <text class="new-tag" x="52" y="50">🆕 NEW · TIER 2</text>
+                <text class="node-sub" x="52" y="64">Governance voters</text>
+            </g>
+
+            <g transform="translate(1160, 60)">
+                <rect class="node-box t3" x="0" y="0" width="180" height="70" />
+                <text class="node-icon" x="20" y="32">🌍</text>
+                <text class="node-title" x="52" y="30">Public Verifier</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 2</text>
+                <text class="node-sub" x="52" y="64">No wallet needed</text>
+            </g>
+
+            <text x="20" y="170" class="layer-label" fill="#10b981">TIER 1 · REAL-WORLD READINESS (offline-first, mobile, PWA)</text>
+
+            <g transform="translate(60, 190)">
+                <rect class="node-box t1" x="0" y="0" width="280" height="160" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">📱</text>
+                <text class="node-title" x="52" y="30">PWA Wrapper</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 1 · F1</text>
+                <text class="node-sub" x="20" y="74" fill="#10b981">▸ manifest.json + install prompt</text>
+                <text class="node-sub" x="20" y="90">▸ Add to home screen (Android/iOS)</text>
+                <text class="node-sub" x="20" y="106">▸ App icon · splash screen</text>
+                <text class="node-sub" x="20" y="122">▸ Works in low-bandwidth 2G areas</text>
+                <text class="node-sub" x="20" y="138">▸ Touch-first UI for village use</text>
+            </g>
+
+            <g transform="translate(360, 190)">
+                <rect class="node-box t1" x="0" y="0" width="280" height="160" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">📡</text>
+                <text class="node-title" x="52" y="30">Service Worker</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 1 · F1</text>
+                <text class="node-sub" x="20" y="74" fill="#10b981">▸ Cache-first strategy</text>
+                <text class="node-sub" x="20" y="90">▸ IndexedDB queue for offline txs</text>
+                <text class="node-sub" x="20" y="106">▸ Background sync on reconnect</text>
+                <text class="node-sub" x="20" y="122">▸ Conflict resolution (CRDT)</text>
+                <text class="node-sub" x="20" y="138">▸ Push notification handler</text>
+            </g>
+
+            <g transform="translate(660, 190)">
+                <rect class="node-box t1" x="0" y="0" width="280" height="160" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🌐</text>
+                <text class="node-title" x="52" y="30">IPFS Document Vault</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 1 · F2</text>
+                <text class="node-sub" x="20" y="74" fill="#10b981">▸ Claim PDFs · photos · signatures</text>
+                <text class="node-sub" x="20" y="90">▸ Pinata / web3.storage gateway</text>
+                <text class="node-sub" x="20" y="106">▸ Content-addressed CIDs</text>
+                <text class="node-sub" x="20" y="122">▸ Hash stored on-chain (cheaper)</text>
+                <text class="node-sub" x="20" y="138">▸ Works without IPFS gateway</text>
+            </g>
+
+            <g transform="translate(960, 190)">
+                <rect class="node-box t1" x="0" y="0" width="380" height="160" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">📲</text>
+                <text class="node-title" x="52" y="30">Web3 Push Notifications</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 1 · F3</text>
+                <text class="node-sub" x="20" y="74" fill="#10b981">▸ EPNS (Ethereum Push Notification Service)</text>
+                <text class="node-sub" x="20" y="90">▸ Alert family on payment received</text>
+                <text class="node-sub" x="20" y="106">▸ Notify cooperative on dispute raised</text>
+                <text class="node-sub" x="20" y="122">▸ Inbox-style notification feed</text>
+                <text class="node-sub" x="20" y="138">▸ Gasless for recipients (subsidized)</text>
+            </g>
+
+            <text x="20" y="380" class="layer-label" fill="#52b788">EXISTING FRONTEND (kept &amp; extended)</text>
+
+            <g transform="translate(60, 400)">
+                <rect class="node-box accent" x="0" y="0" width="240" height="120" />
+                <text class="node-icon" x="20" y="28">📊</text>
+                <text class="node-title" x="52" y="28">index.html (VanAdhikar)</text>
+                <text class="exist-tag" x="52" y="44">EXISTING</text>
+                <text class="node-sub" x="20" y="68">▸ 9 pages · bilingual</text>
+                <text class="node-sub" x="20" y="84">▸ + offline mode (Tier 1)</text>
+                <text class="node-sub" x="20" y="100">▸ + DAO vote UI (Tier 2)</text>
+            </g>
+
+            <g transform="translate(320, 400)">
+                <rect class="node-box accent" x="0" y="0" width="180" height="120" />
+                <text class="node-icon" x="20" y="28">📱</text>
+                <text class="node-title" x="52" y="28">family.html</text>
+                <text class="exist-tag" x="52" y="44">EXISTING</text>
+                <text class="node-sub" x="20" y="68">▸ + claim certificate</text>
+                <text class="node-sub" x="20" y="84">▸ + DID profile (Tier 4)</text>
+            </g>
+
+            <g transform="translate(520, 400)">
+                <rect class="node-box accent" x="0" y="0" width="180" height="120" />
+                <text class="node-icon" x="20" y="28">🔒</text>
+                <text class="node-title" x="52" y="28">security.html</text>
+                <text class="exist-tag" x="52" y="44">EXISTING</text>
+                <text class="node-sub" x="20" y="68">▸ + ZK proof demo (Tier 4)</text>
+            </g>
+
+            <g transform="translate(720, 400)">
+                <rect class="node-box t2" x="0" y="0" width="240" height="120" stroke-width="2" />
+                <text class="node-icon" x="20" y="28">🏛️</text>
+                <text class="node-title" x="52" y="28">dao.html</text>
+                <text class="new-tag" x="52" y="44">🆕 NEW · TIER 2 · F5</text>
+                <text class="node-sub" x="20" y="68" fill="#f59e0b">▸ Proposal creation</text>
+                <text class="node-sub" x="20" y="84">▸ Token-weighted voting</text>
+                <text class="node-sub" x="20" y="100">▸ Delegation &amp; treasury</text>
+            </g>
+
+            <g transform="translate(980, 400)">
+                <rect class="node-box t2" x="0" y="0" width="180" height="120" stroke-width="2" />
+                <text class="node-icon" x="20" y="28">🔍</text>
+                <text class="node-title" x="52" y="28">verify.html</text>
+                <text class="new-tag" x="52" y="44">🆕 NEW · TIER 2 · F6</text>
+                <text class="node-sub" x="20" y="68" fill="#f59e0b">▸ No-wallet public portal</text>
+                <text class="node-sub" x="20" y="84">▸ Paste tx hash → proof</text>
+            </g>
+
+            <g transform="translate(1180, 400)">
+                <rect class="node-box accent" x="0" y="0" width="160" height="120" />
+                <text class="node-icon" x="20" y="28">🖥️</text>
+                <text class="node-title" x="52" y="28">kilo_demo</text>
+                <text class="exist-tag" x="52" y="44">EXISTING</text>
+                <text class="node-sub" x="20" y="68">▸ Multisig console</text>
+            </g>
+
+            <text x="20" y="560" class="layer-label" fill="#f59e0b">TIER 2 · TRUST &amp; TRANSPARENCY (NFT certs, DAO, public verifier)</text>
+
+            <g transform="translate(60, 580)">
+                <rect class="node-box t2" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🎖️</text>
+                <text class="node-title" x="52" y="30">On-chain Claim Certificates</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 2 · F4</text>
+                <text class="node-sub" x="20" y="74" fill="#f59e0b">▸ ERC-721 Soulbound NFT</text>
+                <text class="node-sub" x="20" y="90">▸ Non-transferable (one per family)</text>
+                <text class="node-sub" x="20" y="106">▸ SVG certificate with QR</text>
+                <text class="node-sub" x="20" y="122">▸ Tamper-evident metadata</text>
+                <text class="node-sub" x="20" y="138">▸ Print-ready PDF export</text>
+                <text class="node-sub" x="20" y="154">▸ Self-sovereign proof of claim</text>
+            </g>
+
+            <g transform="translate(400, 580)">
+                <rect class="node-box t2" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🗳️</text>
+                <text class="node-title" x="52" y="30">DAO Governance (Tally/OpenZeppelin)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 2 · F5</text>
+                <text class="node-sub" x="20" y="74" fill="#f59e0b">▸ Governor + Timelock contracts</text>
+                <text class="node-sub" x="20" y="90">▸ 1-token-1-vote + delegation</text>
+                <text class="node-sub" x="20" y="106">▸ Proposal: change timelock, fees</text>
+                <text class="node-sub" x="20" y="122">▸ Quorum &amp; voting periods</text>
+                <text class="node-sub" x="20" y="138">▸ Treasury managed by vote</text>
+                <text class="node-sub" x="20" y="154">▸ Tally board for transparency</text>
+            </g>
+
+            <g transform="translate(740, 580)">
+                <rect class="node-box t2" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🔍</text>
+                <text class="node-title" x="52" y="30">Public Verifier Portal</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 2 · F6</text>
+                <text class="node-sub" x="20" y="74" fill="#f59e0b">▸ No MetaMask required</text>
+                <text class="node-sub" x="20" y="90">▸ Paste tx hash or family ID</text>
+                <text class="node-sub" x="20" y="106">▸ Read-only RPC (rate-limited)</text>
+                <text class="node-sub" x="20" y="122">▸ Journalists · courts · NGOs</text>
+                <text class="node-sub" x="20" y="138">▸ Embeddable widget for media</text>
+                <text class="node-sub" x="20" y="154">▸ Historical audit log view</text>
+            </g>
+
+            <g transform="translate(1080, 580)">
+                <rect class="node-box t2" x="0" y="0" width="260" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🪪</text>
+                <text class="node-title" x="52" y="30">Family DID (ERC-725)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4 · F10</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ Self-sovereign identity</text>
+                <text class="node-sub" x="20" y="90">▸ Portable across chains</text>
+                <text class="node-sub" x="20" y="106">▸ Verifiable credentials</text>
+                <text class="node-sub" x="20" y="122">▸ Recovery via social multisig</text>
+                <text class="node-sub" x="20" y="138">▸ Family member sub-keys</text>
+                <text class="node-sub" x="20" y="154">▸ KYC hooks (gov-issued)</text>
+            </g>
+
+            <text x="20" y="780" class="layer-label" fill="#ec4899">TIER 3 · INTELLIGENCE LAYER (AI, IoT, DeFi)</text>
+
+            <g transform="translate(60, 800)">
+                <rect class="node-box t3" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🤖</text>
+                <text class="node-title" x="52" y="30">AI Underpayment Detector</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 3 · F7</text>
+                <text class="node-sub" x="20" y="74" fill="#ec4899">▸ Anomaly detection on payments</text>
+                <text class="node-sub" x="20" y="90">▸ Flags below-entitlement transfers</text>
+                <text class="node-sub" x="20" y="106">▸ On-device (TensorFlow.js) + server</text>
+                <text class="node-sub" x="20" y="122">▸ Auto-dispute generation</text>
+                <text class="node-sub" x="20" y="138">▸ Trained on historical tribal data</text>
+                <text class="node-sub" x="20" y="154">▸ Multilingual alerts (EN/GU/HI)</text>
+            </g>
+
+            <g transform="translate(400, 800)">
+                <rect class="node-box t3" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🛰️</text>
+                <text class="node-title" x="52" y="30">Satellite &amp; IoT Forest Monitor</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 3 · F8</text>
+                <text class="node-sub" x="20" y="74" fill="#ec4899">▸ Sentinel-2 / Landsat NDVI feeds</text>
+                <text class="node-sub" x="20" y="90">▸ Deforestation alert → on-chain</text>
+                <text class="node-sub" x="20" y="106">▸ Soil sensors (LoRaWAN)</text>
+                <text class="node-sub" x="20" y="122">▸ Carbon sequestration estimate</text>
+                <text class="node-sub" x="20" y="138">▸ Geo-fenced claim verification</text>
+                <text class="node-sub" x="20" y="154">▸ Wildlife corridor detection</text>
+            </g>
+
+            <g transform="translate(740, 800)">
+                <rect class="node-box t3" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">💰</text>
+                <text class="node-title" x="52" y="30">DeFi Yield on Idle POL</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 3 · F9</text>
+                <text class="node-sub" x="20" y="74" fill="#ec4899">▸ Aave / Compound deposit</text>
+                <text class="node-sub" x="20" y="90">▸ Auto-compound interest</text>
+                <text class="node-sub" x="20" y="106">▸ Funds family bonuses/emergency</text>
+                <text class="node-sub" x="20" y="122">▸ Risk-rated strategies (low→high)</text>
+                <text class="node-sub" x="20" y="138">▸ DAO-approved yield params</text>
+                <text class="node-sub" x="20" y="154">▸ Carbon credit marketplace hook</text>
+            </g>
+
+            <g transform="translate(1080, 800)">
+                <rect class="node-box t3" x="0" y="0" width="260" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🌱</text>
+                <text class="node-title" x="52" y="30">Carbon Credits (Toucan)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 3 · F9b</text>
+                <text class="node-sub" x="20" y="74" fill="#ec4899">▸ Tokenize forest carbon offset</text>
+                <text class="node-sub" x="20" y="90">▸ Verified by IoT/satellite</text>
+                <text class="node-sub" x="20" y="106">▸ Sell to corporates (B2B revenue)</text>
+                <text class="node-sub" x="20" y="122">▸ Direct to cooperative treasury</text>
+                <text class="node-sub" x="20" y="138">▸ Transparent impact reports</text>
+                <text class="node-sub" x="20" y="154">▸ Verra/Gold Standard compatible</text>
+            </g>
+
+            <text x="20" y="1000" class="layer-label" fill="#8b5cf6">TIER 4 · SCALE &amp; IDENTITY (DID, cross-chain, ZK privacy)</text>
+
+            <g transform="translate(60, 1020)">
+                <rect class="node-box t4" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🌉</text>
+                <text class="node-title" x="52" y="30">Cross-chain Bridge (LayerZero)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4 · F11</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ Polygon Amoy ↔ Mainnet</text>
+                <text class="node-sub" x="20" y="90">▸ Mirror state to L2s (Base, Arbitrum)</text>
+                <text class="node-sub" x="20" y="106">▸ Cheaper verification on any chain</text>
+                <text class="node-sub" x="20" y="122">▸ Cross-chain NFT certificate</text>
+                <text class="node-sub" x="20" y="138">▸ Wormhole fallback for redundancy</text>
+                <text class="node-sub" x="20" y="154">▸ Universal proof-of-claim resolver</text>
+            </g>
+
+            <g transform="translate(400, 1020)">
+                <rect class="node-box t4" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🔐</text>
+                <text class="node-title" x="52" y="30">ZK Privacy Proofs (zk-SNARKs)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4 · F12</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ Prove eligibility without revealing</text>
+                <text class="node-sub" x="20" y="90">▸ Hide Aadhaar/ID numbers</text>
+                <text class="node-sub" x="20" y="106">▸ Prove &gt;18 without DOB</text>
+                <text class="node-sub" x="20" y="122">▸ Circom + snarkjs circuits</text>
+                <text class="node-sub" x="20" y="138">▸ Verifier on-chain (Groth16)</text>
+                <text class="node-sub" x="20" y="154">▸ GDPR/privacy law compliance</text>
+            </g>
+
+            <g transform="translate(740, 1020)">
+                <rect class="node-box t4" x="0" y="0" width="320" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🪪</text>
+                <text class="node-title" x="52" y="30">DID &amp; Verifiable Credentials</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4 · F10</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ ERC-725 + ERC-1056 (Ethereum DID)</text>
+                <text class="node-sub" x="20" y="90">▸ W3C-compliant VC schema</text>
+                <text class="node-sub" x="20" y="106">▸ Issued by DTDO (trusted issuer)</text>
+                <text class="node-sub" x="20" y="122">▸ Cross-app portable (gov schemes)</text>
+                <text class="node-sub" x="20" y="138">▸ Ceramic / IDX for off-chain data</text>
+                <text class="node-sub" x="20" y="154">▸ Selective disclosure (per field)</text>
+            </g>
+
+            <g transform="translate(1080, 1020)">
+                <rect class="node-box t4" x="0" y="0" width="260" height="170" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🏛️</text>
+                <text class="node-title" x="52" y="30">Govt. Interop (ONDC, DigiLocker)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4 · F11b</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ Pull Aadhaar/Jan Aushadhi data</text>
+                <text class="node-sub" x="20" y="90">▸ PM-Kisan, MGNREGA hooks</text>
+                <text class="node-sub" x="20" y="106">▸ State Forest Dept. API bridge</text>
+                <text class="node-sub" x="20" y="122">▸ Court order integration (e-Courts)</text>
+                <text class="node-sub" x="20" y="138">▸ Bharat-Stack compatible</text>
+                <text class="node-sub" x="20" y="154">▸ Compliant with DPDP Act 2023</text>
+            </g>
+
+            <text x="20" y="1220" class="layer-label" fill="#3b82f6">BACKEND &amp; OFF-CHAIN SERVICES (new microservices)</text>
+
+            <g transform="translate(60, 1240)">
+                <rect class="node-box" x="0" y="0" width="260" height="120" stroke="#3b82f6" />
+                <text class="node-icon" x="20" y="30">🛰️</text>
+                <text class="node-title" x="52" y="30">Oracle Service (Chainlink)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · INFRA</text>
+                <text class="node-sub" x="20" y="74" fill="#93c5fd">▸ Off-chain data → on-chain</text>
+                <text class="node-sub" x="20" y="90">▸ POL/USD price feeds</text>
+                <text class="node-sub" x="20" y="106">▸ Weather · rainfall data</text>
+            </g>
+
+            <g transform="translate(340, 1240)">
+                <rect class="node-box" x="0" y="0" width="260" height="120" stroke="#3b82f6" />
+                <text class="node-icon" x="20" y="30">🔄</text>
+                <text class="node-title" x="52" y="30">Indexing (The Graph)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · INFRA</text>
+                <text class="node-sub" x="20" y="74" fill="#93c5fd">▸ Subgraph for all events</text>
+                <text class="node-sub" x="20" y="90">▸ GraphQL queries for UI</text>
+                <text class="node-sub" x="20" y="106">▸ Fast historical lookups</text>
+            </g>
+
+            <g transform="translate(620, 1240)">
+                <rect class="node-box" x="0" y="0" width="260" height="120" stroke="#3b82f6" />
+                <text class="node-icon" x="20" y="30">⚙️</text>
+                <text class="node-title" x="52" y="30">Backend API (Node/Python)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · INFRA</text>
+                <text class="node-sub" x="20" y="74" fill="#93c5fd">▸ ML inference endpoint</text>
+                <text class="node-sub" x="20" y="90">▸ IPFS pinning service</text>
+                <text class="node-sub" x="20" y="106">▸ Notification dispatcher</text>
+            </g>
+
+            <g transform="translate(900, 1240)">
+                <rect class="node-box" x="0" y="0" width="240" height="120" stroke="#3b82f6" />
+                <text class="node-icon" x="20" y="30">📊</text>
+                <text class="node-title" x="52" y="30">Analytics (Dune / Supabase)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · INFRA</text>
+                <text class="node-sub" x="20" y="74" fill="#93c5fd">▸ Public dashboards</text>
+                <text class="node-sub" x="20" y="90">▸ Impact metrics</text>
+                <text class="node-sub" x="20" y="106">▸ SQL + on-chain joins</text>
+            </g>
+
+            <g transform="translate(1160, 1240)">
+                <rect class="node-box" x="0" y="0" width="180" height="120" stroke="#3b82f6" />
+                <text class="node-icon" x="20" y="30">📞</text>
+                <text class="node-title" x="52" y="30">IVR / SMS</text>
+                <text class="new-tag" x="52" y="48">🆕 TIER 1</text>
+                <text class="node-sub" x="20" y="74" fill="#93c5fd">▸ Feature phones</text>
+                <text class="node-sub" x="20" y="90">▸ Exotel / Twilio</text>
+                <text class="node-sub" x="20" y="106">▸ Voice in Gujarati</text>
+            </g>
+
+            <text x="20" y="1400" class="layer-label" fill="#a855f7">SMART CONTRACTS (existing extended with new modules)</text>
+
+            <g transform="translate(60, 1420)">
+                <rect class="node-box" x="0" y="0" width="280" height="180" stroke="#a855f7" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">📜</text>
+                <text class="node-title" x="52" y="30">SecureTransactionSystem.sol</text>
+                <text class="exist-tag" x="52" y="48">EXISTING · KEPT</text>
+                <text class="node-sub" x="20" y="74" fill="#d8b4fe">▸ mDAI (ERC-20 + Permit)</text>
+                <text class="node-sub" x="20" y="90">▸ Multisig M-of-N · timelock</text>
+                <text class="node-sub" x="20" y="106">▸ AccessControl · Pausable</text>
+                <text class="node-sub" x="20" y="122">▸ ReentrancyGuard · ECDSA</text>
+                <text class="node-sub" x="20" y="138">▸ On Polygon Amoy</text>
+                <text class="node-sub" x="20" y="154">0x5a82…A47Ce</text>
+            </g>
+
+            <g transform="translate(360, 1420)">
+                <rect class="node-box t2" x="0" y="0" width="220" height="180" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🎖️</text>
+                <text class="node-title" x="52" y="30">ClaimCertificateNFT</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 2</text>
+                <text class="node-sub" x="20" y="74" fill="#f59e0b">▸ ERC-721 soulbound</text>
+                <text class="node-sub" x="20" y="90">▸ 1 NFT per family</text>
+                <text class="node-sub" x="20" y="106">▸ IPFS metadata</text>
+                <text class="node-sub" x="20" y="122">▸ Revocable by DTDO</text>
+                <text class="node-sub" x="20" y="138">▸ Cross-chain (LayerZero)</text>
+                <text class="node-sub" x="20" y="154">▸ SVG on-chain art</text>
+            </g>
+
+            <g transform="translate(600, 1420)">
+                <rect class="node-box t2" x="0" y="0" width="220" height="180" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🏛️</text>
+                <text class="node-title" x="52" y="30">Governor + Timelock</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 2</text>
+                <text class="node-sub" x="20" y="74" fill="#f59e0b">▸ OZ Governor</text>
+                <text class="node-sub" x="20" y="90">▸ Vote token (gToken)</text>
+                <text class="node-sub" x="20" y="106">▸ Proposal lifecycle</text>
+                <text class="node-sub" x="20" y="122">▸ 2-day voting window</text>
+                <text class="node-sub" x="20" y="138">▸ 4% quorum</text>
+                <text class="node-sub" x="20" y="154">▸ Treasury admin</text>
+            </g>
+
+            <g transform="translate(840, 1420)">
+                <rect class="node-box t4" x="0" y="0" width="220" height="180" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">🪪</text>
+                <text class="node-title" x="52" y="30">FamilyIdentity (ERC-725)</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 4</text>
+                <text class="node-sub" x="20" y="74" fill="#8b5cf6">▸ Self-sovereign ID</text>
+                <text class="node-sub" x="20" y="90">▸ Key management</text>
+                <text class="node-sub" x="20" y="106">▸ Execution delegate</text>
+                <text class="node-sub" x="20" y="122">▸ VC issuer registry</text>
+                <text class="node-sub" x="20" y="138">▸ Recovery via guardians</text>
+                <text class="node-sub" x="20" y="154">▸ ZK proof verifier</text>
+            </g>
+
+            <g transform="translate(1080, 1420)">
+                <rect class="node-box t3" x="0" y="0" width="260" height="180" stroke-width="2" />
+                <text class="node-icon" x="20" y="30">💰</text>
+                <text class="node-title" x="52" y="30">TreasuryVault</text>
+                <text class="new-tag" x="52" y="48">🆕 NEW · TIER 3</text>
+                <text class="node-sub" x="20" y="74" fill="#ec4899">▸ Aave integration</text>
+                <text class="node-sub" x="20" y="90">▸ Yield strategy router</text>
+                <text class="node-sub" x="20" y="106">▸ Carbon credit buyback</text>
+                <text class="node-sub" x="20" y="122">▸ Multi-token support</text>
+                <text class="node-sub" x="20" y="138">▸ Emergency withdraw</text>
+                <text class="node-sub" x="20" y="154">▸ Audit trail (events)</text>
+            </g>
+
+            <text x="20" y="1640" class="layer-label" fill="#ef4444">EXTERNAL INFRASTRUCTURE &amp; NETWORKS</text>
+
+            <g transform="translate(60, 1660)">
+                <rect class="node-box" x="0" y="0" width="180" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">🌐</text>
+                <text class="node-title" x="52" y="30">Polygon Amoy</text>
+                <text class="exist-tag" x="52" y="50">EXISTING</text>
+                <text class="node-sub" x="20" y="68">Chain 80002</text>
+            </g>
+
+            <g transform="translate(260, 1660)">
+                <rect class="node-box" x="0" y="0" width="180" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">⬡</text>
+                <text class="node-title" x="52" y="30">Ethereum L1</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 4</text>
+                <text class="node-sub" x="20" y="68">Settlement layer</text>
+            </g>
+
+            <g transform="translate(460, 1660)">
+                <rect class="node-box" x="0" y="0" width="180" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">🔵</text>
+                <text class="node-title" x="52" y="30">Base / Arbitrum</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 4</text>
+                <text class="node-sub" x="20" y="68">L2 mirrors</text>
+            </g>
+
+            <g transform="translate(660, 1660)">
+                <rect class="node-box" x="0" y="0" width="200" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">📦</text>
+                <text class="node-title" x="52" y="30">IPFS (Pinata)</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 1</text>
+                <text class="node-sub" x="20" y="68">Document storage</text>
+            </g>
+
+            <g transform="translate(880, 1660)">
+                <rect class="node-box" x="0" y="0" width="200" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">🛰️</text>
+                <text class="node-title" x="52" y="30">Sentinel Hub</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 3</text>
+                <text class="node-sub" x="20" y="68">Satellite imagery</text>
+            </g>
+
+            <g transform="translate(1100, 1660)">
+                <rect class="node-box" x="0" y="0" width="240" height="80" stroke="#ef4444" />
+                <text class="node-icon" x="20" y="30">🏛️</text>
+                <text class="node-title" x="52" y="30">Gov APIs (DigiLocker/UIDAI)</text>
+                <text class="new-tag" x="52" y="50">🆕 TIER 4</text>
+                <text class="node-sub" x="20" y="68">Identity verification</text>
+            </g>
+
+            <line class="conn conn-t1" x1="700" y1="350" x2="200" y2="400" marker-end="url(#arrow-t1)" />
+            <line class="conn conn-t1" x1="1100" y1="350" x2="1180" y2="400" marker-end="url(#arrow-t1)" />
+            <line class="conn conn-t2" x1="380" y1="750" x2="380" y2="800" marker-end="url(#arrow-t2)" />
+            <line class="conn conn-t2" x1="720" y1="750" x2="720" y2="800" marker-end="url(#arrow-t2)" />
+            <line class="conn conn-t2" x1="1080" y1="750" x2="1080" y2="1020" marker-end="url(#arrow-t2)" />
+            <line class="conn conn-t3" x1="800" y1="970" x2="800" y2="1020" marker-end="url(#arrow-t3)" />
+            <line class="conn conn-t3" x1="1200" y1="970" x2="1200" y2="1420" marker-end="url(#arrow-t3)" />
+            <line class="conn conn-t4" x1="700" y1="1190" x2="950" y2="1420" marker-end="url(#arrow-t4)" />
+            <line class="conn conn-t4" x1="1000" y1="1190" x2="1200" y2="1420" marker-end="url(#arrow-t4)" />
+
+            <line class="conn" x1="200" y1="520" x2="200" y2="580" marker-end="url(#arrow)" />
+            <line class="conn" x1="200" y1="1360" x2="200" y2="1420" marker-end="url(#arrow)" />
+            <line class="conn" x1="450" y1="1600" x2="450" y2="1660" marker-end="url(#arrow)" />
+            <line class="conn" x1="200" y1="1600" x2="200" y2="1660" marker-end="url(#arrow)" />
+
+        </svg>
+    </div>
+
+    <div class="features-section">
+        <h2 class="section-title">🗺️ The 12-Feature Roadmap</h2>
+        <div class="feature-grid">
+
+            <div class="feat-card t1">
+                <div class="feat-head">
+                    <span class="feat-num">F1</span>
+                    <span class="feat-title">📱 PWA + Offline Mode</span>
+                    <span class="feat-tier">Tier 1</span>
+                </div>
+                <p class="feat-prob">Transform the web app into an installable Progressive Web App with full offline support. Tribal villages have intermittent 2G/3G connectivity — this makes the app usable in a moving van, on a hill, in a forest clearing.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Workbox · IndexedDB · Service Workers · Background Sync API</p>
+                <span class="feat-impact">↑ 10x reach into remote villages</span>
+            </div>
+
+            <div class="feat-card t1">
+                <div class="feat-head">
+                    <span class="feat-num">F2</span>
+                    <span class="feat-title">🌐 IPFS Document Vault</span>
+                    <span class="feat-tier">Tier 1</span>
+                </div>
+                <p class="feat-prob">Store claim PDFs, photos, signatures, and tribal maps on IPFS. Only the content hash is stored on-chain (gas savings). Documents become censorship-resistant and verifiable forever.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Pinata / web3.storage · IPFS CIDs · content addressing</p>
+                <span class="feat-impact">₹ 0 vs ₹500+ for centralized cloud</span>
+            </div>
+
+            <div class="feat-card t1">
+                <div class="feat-head">
+                    <span class="feat-num">F3</span>
+                    <span class="feat-title">📲 Web3 Push Notifications</span>
+                    <span class="feat-tier">Tier 1</span>
+                </div>
+                <p class="feat-prob">Replace SMS with EPNS — gasless push notifications. A family gets pinged the moment their payment lands, even if they never open the app. Also enables field volunteers to receive dispute alerts.</p>
+                <p class="feat-tech"><strong>Stack:</strong> EPNS protocol · encrypted channels · mobile SDK</p>
+                <span class="feat-impact">SMS 1M = ₹1L vs EPNS 1M ≈ free</span>
+            </div>
+
+            <div class="feat-card t2">
+                <div class="feat-head">
+                    <span class="feat-num">F4</span>
+                    <span class="feat-title">🎖️ Soulbound Claim NFT</span>
+                    <span class="feat-tier">Tier 2</span>
+                </div>
+                <p class="feat-prob">Mint a non-transferable ERC-721 NFT to each enrolled family as an on-chain certificate. Becomes a self-sovereign proof-of-claim that works offline, in any court, across any chain.</p>
+                <p class="feat-tech"><strong>Stack:</strong> ERC-721S (soulbound) · SVG on-chain · LayerZero OFT</p>
+                <span class="feat-impact">Family becomes own legal custodian</span>
+            </div>
+
+            <div class="feat-card t2">
+                <div class="feat-head">
+                    <span class="feat-num">F5</span>
+                    <span class="feat-title">🏛️ Cooperative DAO</span>
+                    <span class="feat-tier">Tier 2</span>
+                </div>
+                <p class="feat-prob">Upgrade the central admin multisig to a full on-chain DAO. Members vote on treasury allocation, fee changes, dispute policies. Transparent, forkable, and exit-friendly.</p>
+                <p class="feat-tech"><strong>Stack:</strong> OZ Governor · Tally UI · Snapshot (gasless voting)</p>
+                <span class="feat-impact">Removes "single point of trust"</span>
+            </div>
+
+            <div class="feat-card t2">
+                <div class="feat-head">
+                    <span class="feat-num">F6</span>
+                    <span class="feat-title">🔍 Public Verifier Portal</span>
+                    <span class="feat-tier">Tier 2</span>
+                </div>
+                <p class="feat-prob">A read-only website (no wallet) where journalists, courts, RTI activists, and NGOs can paste a transaction hash or family ID and instantly verify the on-chain claim. Transparency for the public.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Public RPC (rate-limited) · subgraph · embeddable widget</p>
+                <span class="feat-impact">Media &amp; court-friendly evidence</span>
+            </div>
+
+            <div class="feat-card t3">
+                <div class="feat-head">
+                    <span class="feat-num">F7</span>
+                    <span class="feat-title">🤖 AI Underpayment Detector</span>
+                    <span class="feat-tier">Tier 3</span>
+                </div>
+                <p class="feat-prob">An ML model trained on historical payment data automatically flags any transaction that falls below a family's entitled amount. Auto-files a dispute and notifies DTDO — no human needed to detect cheating.</p>
+                <p class="feat-tech"><strong>Stack:</strong> TensorFlow.js (browser) + Python (server) · isolation forest</p>
+                <span class="feat-impact">Catches 95% of underpayments instantly</span>
+            </div>
+
+            <div class="feat-card t3">
+                <div class="feat-head">
+                    <span class="feat-num">F8</span>
+                    <span class="feat-title">🛰️ Satellite + IoT Monitor</span>
+                    <span class="feat-tier">Tier 3</span>
+                </div>
+                <p class="feat-prob">Sentinel-2 satellite imagery + LoRaWAN soil sensors stream real-time forest health data on-chain. Deforestation alerts trigger automatic investigations. Carbon sequestration gets measured &amp; rewarded.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Sentinel Hub API · Chainlink oracle · NDVI analysis</p>
+                <span class="feat-impact">Deforestation caught in 24h not 6mo</span>
+            </div>
+
+            <div class="feat-card t3">
+                <div class="feat-head">
+                    <span class="feat-num">F9</span>
+                    <span class="feat-title">💰 DeFi Yield + Carbon Credits</span>
+                    <span class="feat-tier">Tier 3</span>
+                </div>
+                <p class="feat-prob">Idle POL in the cooperative treasury is auto-deposited into Aave to earn yield. Verified carbon credits from the forest are tokenized via Toucan Protocol and sold to corporations — creating a new revenue stream for the community.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Aave v3 · Toucan · Chainlink Keepers · 4626 vault</p>
+                <span class="feat-impact">₹₹₹ from carbon: 1000-5000 ha/yr</span>
+            </div>
+
+            <div class="feat-card t4">
+                <div class="feat-head">
+                    <span class="feat-num">F10</span>
+                    <span class="feat-title">🪪 Self-Sovereign Family DID</span>
+                    <span class="feat-tier">Tier 4</span>
+                </div>
+                <p class="feat-prob">Each family gets an ERC-725 Decentralized Identifier + Verifiable Credentials issued by DTDO. Works across any app, any chain, any government portal. No more "prove your claim 10 times to 10 agencies".</p>
+                <p class="feat-tech"><strong>Stack:</strong> ERC-725 / ERC-1056 · W3C VC · Ceramic · social recovery</p>
+                <span class="feat-impact">One identity, infinite interoperability</span>
+            </div>
+
+            <div class="feat-card t4">
+                <div class="feat-head">
+                    <span class="feat-num">F11</span>
+                    <span class="feat-title">🌉 Cross-Chain + Govt. Interop</span>
+                    <span class="feat-tier">Tier 4</span>
+                </div>
+                <p class="feat-prob">LayerZero bridge mirrors claims to Ethereum L1 + L2s for redundancy. Native integrations with DigiLocker, Aadhaar, PM-Kisan, MGNREGA, e-Courts, and State Forest APIs. Bharat-Stack ready.</p>
+                <p class="feat-tech"><strong>Stack:</strong> LayerZero OFT · Wormhole · UIDAI sandbox · ONDC</p>
+                <span class="feat-impact">Government scheme auto-enrollment</span>
+            </div>
+
+            <div class="feat-card t4">
+                <div class="feat-head">
+                    <span class="feat-num">F12</span>
+                    <span class="feat-title">🔐 ZK Privacy Proofs</span>
+                    <span class="feat-tier">Tier 4</span>
+                </div>
+                <p class="feat-prob">zk-SNARK circuits let families prove "I am over 18", "I belong to a recognized tribe", "I own this claim" without revealing Aadhaar numbers, dates of birth, or full identity. GDPR + DPDP Act 2023 compliant.</p>
+                <p class="feat-tech"><strong>Stack:</strong> Circom 2 · snarkjs · Groth16 verifier on-chain</p>
+                <span class="feat-impact">Privacy + compliance simultaneously</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="roadmap">
+        <h2>🗓️ Suggested Implementation Roadmap (12 months)</h2>
+        <div class="roadmap-grid">
+            <div class="roadmap-quarter">
+                <h3><span class="q-num">Q1 ·</span> Months 1-3</h3>
+                <ul>
+                    <li>F1 — PWA + Offline Mode</li>
+                    <li>F2 — IPFS Vault</li>
+                    <li>F6 — Public Verifier Portal</li>
+                    <li>Smart contract audit (existing)</li>
+                    <li>Hire 1 mobile dev + 1 Solidity dev</li>
+                </ul>
+            </div>
+            <div class="roadmap-quarter">
+                <h3><span class="q-num">Q2 ·</span> Months 4-6</h3>
+                <ul>
+                    <li>F3 — Web3 Push (EPNS)</li>
+                    <li>F4 — Soulbound Claim NFT</li>
+                    <li>F10 — DID (ERC-725)</li>
+                    <li>Field pilot in 5 Gujarat villages</li>
+                    <li>10K family onboarding target</li>
+                </ul>
+            </div>
+            <div class="roadmap-quarter">
+                <h3><span class="q-num">Q3 ·</span> Months 7-9</h3>
+                <ul>
+                    <li>F5 — Cooperative DAO</li>
+                    <li>F7 — AI Underpayment Detector</li>
+                    <li>F8 — Satellite Monitor MVP</li>
+                    <li>Govt. MoU (Forest Dept.)</li>
+                    <li>State-wide rollout (Gujarat)</li>
+                </ul>
+            </div>
+            <div class="roadmap-quarter">
+                <h3><span class="q-num">Q4 ·</span> Months 10-12</h3>
+                <ul>
+                    <li>F9 — DeFi + Carbon Credits</li>
+                    <li>F11 — Cross-chain + Govt interop</li>
+                    <li>F12 — ZK Privacy (research→alpha)</li>
+                    <li>Pan-India expansion (5 states)</li>
+                    <li>Series A fundraise</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        🌿 VanAdhikar Chain · TS-08 · Roadmap v2.0 · 2026
+    </div>
+
+</div>
+</body>
+</html>

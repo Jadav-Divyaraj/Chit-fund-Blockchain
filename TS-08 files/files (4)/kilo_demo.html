@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Transaction System — Console</title>
+    <meta name="description" content="Professional dashboard for testing secure, multi-signature blockchain transactions." />
+    <link rel="stylesheet" href="kilo_demo.css" />
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">STS</div>
+                <div class="brand-text">
+                    <span class="brand-title">SecureTx</span>
+                    <span class="brand-sub">Console</span>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <a class="nav-item active" href="#overview" data-view="overview"><span class="nav-ico">◧</span> Overview</a>
+                <a class="nav-item" href="#tokens" data-view="tokens"><span class="nav-ico">◈</span> Tokens</a>
+                <a class="nav-item" href="#multisig" data-view="multisig"><span class="nav-ico">⛁</span> Multisig</a>
+                <a class="nav-item" href="#activity" data-view="activity"><span class="nav-ico">≣</span> Activity</a>
+            </nav>
+
+            <div class="sidebar-foot">
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme"><span id="themeIcon">☀</span></button>
+                <span class="muted" id="sidebarStatus">Offline</span>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div>
+                    <h1 class="page-title">Transaction Console</h1>
+                    <p class="page-sub" id="networkLine">Not connected</p>
+                </div>
+                <div class="topbar-actions">
+                    <div class="net-badge" id="networkBadge">Disconnected</div>
+                    <button class="btn btn-primary" id="connectBtn">Connect Wallet</button>
+                </div>
+            </header>
+
+            <div class="alert alert-warn" id="configAlert" style="display:none;">
+                Update <code>CONTRACT_ADDRESS</code> and <code>RPC_URL</code> in <code>app.js</code> before using live features.
+            </div>
+
+            <section class="card wallet-card" id="walletCard" style="display:none;">
+                <div class="wallet-head">
+                    <div class="avatar" id="walletAvatar">?</div>
+                    <div>
+                        <div class="wallet-addr" id="walletAddress">—</div>
+                        <div class="wallet-roles" id="walletRoles"></div>
+                    </div>
+                    <div class="wallet-balances">
+                        <div class="bal"><span class="bal-label">mDAI</span><span class="bal-val" id="mDAIBalance">0.00</span></div>
+                        <div class="bal"><span class="bal-label">ETH</span><span class="bal-val" id="ethBalance">0.00</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats" id="statsGrid">
+                <div class="stat"><span class="stat-label">Owners</span><span class="stat-val" id="statOwners">—</span></div>
+                <div class="stat"><span class="stat-label">Required Sig</span><span class="stat-val" id="statReq">—</span></div>
+                <div class="stat"><span class="stat-label">Timelock</span><span class="stat-val" id="statTimelock">—</span></div>
+                <div class="stat"><span class="stat-label">Tx Count</span><span class="stat-val" id="statTx">—</span></div>
+                <div class="stat"><span class="stat-label">Status</span><span class="stat-val" id="statPaused">—</span></div>
+                <div class="stat"><span class="stat-label">Contract ETH</span><span class="stat-val" id="statContractEth">—</span></div>
+            </section>
+
+            <section class="card" id="tokens">
+                <h2 class="card-title">Token Operations</h2>
+                <div class="grid-3">
+                    <div class="panel">
+                        <h3 class="panel-title">Mint</h3>
+                        <label class="field"><span>Recipient</span><input id="mintTo" placeholder="0x…" /></label>
+                        <label class="field"><span>Amount (mDAI)</span><input id="mintAmount" type="number" min="0" step="0.01" placeholder="100" /></label>
+                        <button class="btn btn-success w-full" id="mintBtn">Mint Tokens</button>
+                    </div>
+                    <div class="panel">
+                        <h3 class="panel-title">Transfer</h3>
+                        <label class="field"><span>Recipient</span><input id="transferTo" placeholder="0x…" /></label>
+                        <label class="field"><span>Amount (mDAI)</span><input id="transferAmount" type="number" min="0" step="0.01" placeholder="50" /></label>
+                        <button class="btn btn-primary w-full" id="transferBtn">Transfer</button>
+                    </div>
+                    <div class="panel">
+                        <h3 class="panel-title">Burn</h3>
+                        <label class="field"><span>Amount (mDAI)</span><input id="burnAmount" type="number" min="0" step="0.01" placeholder="10" /></label>
+                        <div class="spacer"></div>
+                        <button class="btn btn-ghost-danger w-full" id="burnBtn">Burn</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="multisig">
+                <h2 class="card-title">Multisig Transaction Builder</h2>
+                <div class="builder">
+                    <label class="field"><span>Type</span>
+                        <select id="txType">
+                            <option value="transfer">Transfer mDAI</option>
+                            <option value="transferEth">Transfer ETH</option>
+                            <option value="contractCall">Contract Call</option>
+                            <option value="updateOwners">Update Owners (admin)</option>
+                            <option value="updateTimelock">Update Timelock (admin)</option>
+                        </select>
+                    </label>
+                    <div id="txForm" class="tx-form"></div>
+                    <div class="builder-actions">
+                        <button class="btn btn-primary" id="proposeBtn" disabled>Propose</button>
+                        <button class="btn btn-secondary" id="proposeSigBtn" disabled>Propose (Gasless)</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid-2" id="activity">
+                <div class="card">
+                    <div class="card-head"><h2 class="card-title">Pending</h2><button class="btn btn-sm btn-secondary" id="refreshPending">Refresh</button></div>
+                    <div id="pendingList" class="tx-list"></div>
+                </div>
+                <div class="card">
+                    <div class="card-head"><h2 class="card-title">History</h2><button class="btn btn-sm btn-secondary" id="refreshHistory">Refresh</button></div>
+                    <div id="historyList" class="tx-list"></div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-head"><h2 class="card-title">Console</h2><button class="btn btn-sm btn-secondary" id="clearLogs">Clear</button></div>
+                <div class="console" id="console"></div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toasts" id="toasts"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
