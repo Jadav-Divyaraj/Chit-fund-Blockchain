@@ -22,6 +22,16 @@ India's ₹50,000 Crore chit fund industry operates on trust — organizers mana
 
 ---
 
+## Demo
+
+### Live on Polygon — On-Chain Verification
+![Live Polygon](screenshots/06-live-polygon.png)
+
+### Transaction Demo
+![Transaction Demo](screenshots/07-transaction-demo.png)
+
+---
+
 ## How It Works
 
 ```
