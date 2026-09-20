@@ -7,7 +7,7 @@
 ![Ethers.js](https://img.shields.io/badge/Ethers.js-6.x-3C3C3D?style=flat&logo=ethereum)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**🔗 Live Demo:** [https://chit-fund-blockchain.vercel.app](https://chit-fund-blockchain.vercel.app)
+**🔗 Live Demo:** (https://chit-fund-blockchain.netlify.app/))
 
 ---
 
