@@ -35,13 +35,11 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 ### Monthly Auction — Live Bidding
 ![Auction](screenshots/03-auction.png)
 
-### Security Proof — CEO Theft Attempt (Fails!)
-![Security Demo](screenshots/04-security.png)
+
 
 ### Polygonscan — On-Chain Verification
-![Polygonscan](screenshots/05-polygonscan.png)
+![Polygonscan](screenshots/04-security.png)
 
-> **Note:** Replace the screenshot files in `screenshots/` folder with your actual demo images.
 
 ---
 
