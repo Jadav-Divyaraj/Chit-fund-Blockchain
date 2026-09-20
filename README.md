@@ -29,6 +29,9 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 ### Live on Polygon — On-Chain Verification
 ![Live Polygon](screenshots/06-live-polygon.png)
 
+### Transaction Demo
+![Transaction Demo](screenshots/07-transaction-demo.png)
+
 ---
 
 ## How It Works
@@ -104,7 +107,8 @@ Chit-fund-Blockchain/
 ├── test/
 │   └── MyToken.test.js      # Unit tests
 ├── screenshots/             # Demo screenshots
-│   └── 06-live-polygon.png
+│   ├── 06-live-polygon.png
+│   └── 07-transaction-demo.png
 ├── index.html               # Main UI — hero, dashboard, auction
 ├── app.js                   # Blockchain interaction & wallet logic
 ├── style.css                # Dark theme with gold accents
