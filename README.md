@@ -7,7 +7,7 @@
 ![Hardhat](https://img.shields.io/badge/Hardhat-2.19-FFDB1C?style=flat&logo=hardhat)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Live Demo:** [https://chit-fund-blockchain.vercel.app](https://chit-fund-blockchain.vercel.app)
+**Live Demo:** (https://chit-fund-blockchain.netlify.app/)
 
 ---
 
