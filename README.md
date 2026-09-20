@@ -38,7 +38,7 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 
 
 ### Polygonscan — On-Chain Verification
-![Polygonscan](screenshots/04-security.png)
+![Polygonscan]((06-full-demo.png))
 
 
 ---
