@@ -153,59 +153,7 @@ Chit-fund-Blockchain/
 - [MetaMask](https://metamask.io/) browser extension
 - Polygon Amoy Testnet tokens ([faucet](https://faucet.polygon.technology/))
 
-### Installation
 
-```bash
-# Clone the repository
-git clone https://github.com/Jadav-Divyaraj/Chit-fund-Blockchain.git
-cd Chit-fund-Blockchain
-
-# Install dependencies
-npm install
-
-# Run tests
-npx hardhat test
-
-# Compile contracts
-npx hardhat compile
-```
-
-### Run Frontend Locally
-
-```bash
-# Using Python
-python -m http.server 3000
-
-# Or using Node.js
-npx serve .
-
-# Then open http://localhost:3000
-```
-
-### Deploy to Vercel
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Login to Vercel
-vercel login
-
-# Deploy
-vercel
-
-# Deploy to production
-vercel --prod
-```
-
-Or connect your GitHub repo to [vercel.com](https://vercel.com) for automatic deployments.
-
-### Deploy Contract
-
-```bash
-# Deploy to Polygon Amoy Testnet
-npx hardhat run scripts/deploy.js --network amoy
-```
 
 ---
 
@@ -270,7 +218,6 @@ SmartChit
 
 ## Useful Links
 
-- [Live Demo](https://chit-fund-blockchain.vercel.app)
 - [Polygonscan (Contract)](https://amoy.polygonscan.com/address/0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54)
 - [Polygon Amoy Faucet](https://faucet.polygon.technology/)
 - [MetaMask Download](https://metamask.io/)
