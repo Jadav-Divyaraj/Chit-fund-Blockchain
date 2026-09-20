@@ -2,10 +2,12 @@
 
 > India's first trustless chit fund. No organizer controls your money. No fraud possible. Every rupee tracked on blockchain.
 
-![Solidity](https://img.shields.io/badge/Solidity-0.8.19-363636?style=flat&logo=solidity)
+![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?style=flat&logo=solidity)
 ![Polygon](https://img.shields.io/badge/Polygon-Amoy%20Testnet-8247E5?style=flat&logo=polygon)
-![Ethers.js](https://img.shields.io/badge/Ethers.js-5.7-3C3C3D?style=flat&logo=ethereum)
+![Ethers.js](https://img.shields.io/badge/Ethers.js-6.x-3C3C3D?style=flat&logo=ethereum)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+**🔗 Live Demo:** [https://chit-fund-blockchain.vercel.app](https://chit-fund-blockchain.vercel.app)
 
 ---
 
@@ -19,6 +21,27 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 - Legal remedies take years; money is gone forever
 
 **SmartChit eliminates trust** by replacing the human organizer with a smart contract.
+
+---
+
+## Demo
+
+### Hero Section
+![Hero Section](screenshots/01-hero.png)
+
+### Dashboard — After Wallet Connect
+![Dashboard](screenshots/02-dashboard.png)
+
+### Monthly Auction — Live Bidding
+![Auction](screenshots/03-auction.png)
+
+### Security Proof — CEO Theft Attempt (Fails!)
+![Security Demo](screenshots/04-security.png)
+
+### Polygonscan — On-Chain Verification
+![Polygonscan](screenshots/05-polygonscan.png)
+
+> **Note:** Replace the screenshot files in `screenshots/` folder with your actual demo images.
 
 ---
 
@@ -74,12 +97,13 @@ India's **₹50,000 Crore** chit fund industry is riddled with fraud:
 
 | Layer | Technology |
 |-------|-----------|
-| **Smart Contract** | Solidity 0.8.19 |
+| **Smart Contract** | Solidity 0.8.20 |
 | **Blockchain** | Polygon Amoy Testnet |
 | **Development** | Hardhat |
 | **Frontend** | HTML5, CSS3, Vanilla JS |
-| **Wallet** | MetaMask (ethers.js v5.7.2) |
+| **Wallet** | MetaMask (ethers.js v6) |
 | **Price Feed** | CoinGecko API (POL/INR) |
+| **Deployment** | Vercel |
 
 ---
 
@@ -93,10 +117,17 @@ Chit-fund-Blockchain/
 │   └── deploy.js            # Deployment script
 ├── test/
 │   └── MyToken.test.js      # Unit tests
+├── screenshots/             # Demo screenshots
+│   ├── 01-hero.png
+│   ├── 02-dashboard.png
+│   ├── 03-auction.png
+│   ├── 04-security.png
+│   └── 05-polygonscan.png
 ├── index.html               # Main UI — hero, dashboard, auction
 ├── app.js                   # Blockchain interaction & wallet logic
 ├── style.css                # Dark theme with gold accents
 ├── hardhat.config.js        # Hardhat configuration
+├── vercel.json              # Vercel deployment config
 ├── package.json             # Node dependencies
 ├── .gitignore               # Git ignore rules
 ├── LICENSE                  # MIT License
@@ -159,13 +190,35 @@ npx hardhat test
 npx hardhat compile
 ```
 
-### Run Frontend
+### Run Frontend Locally
 
 ```bash
-# Simply open index.html in your browser
-# Or use a local server
+# Using Python
+python -m http.server 3000
+
+# Or using Node.js
 npx serve .
+
+# Then open http://localhost:3000
 ```
+
+### Deploy to Vercel
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Login to Vercel
+vercel login
+
+# Deploy
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+Or connect your GitHub repo to [vercel.com](https://vercel.com) for automatic deployments.
 
 ### Deploy Contract
 
@@ -188,8 +241,26 @@ npx hardhat run scripts/deploy.js --network amoy
 
 ---
 
+## Tests
+
+```bash
+npx hardhat test
+```
+
+```
+MyToken
+  ✔ has correct name and symbol and initial supply
+  ✔ allows transfers
+  ✔ owner can mint, others cannot
+
+3 passing
+```
+
+---
+
 ## Useful Links
 
+- [Live Demo](https://chit-fund-blockchain.vercel.app)
 - [Polygonscan (Contract)](https://amoy.polygonscan.com/address/0x96539E626DB6b5cE21F2E39F9BDa46d1bD9DbB54)
 - [Polygon Amoy Faucet](https://faucet.polygon.technology/)
 - [MetaMask Download](https://metamask.io/)
